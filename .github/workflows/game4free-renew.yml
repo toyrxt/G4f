@@ -1,6 +1,8 @@
 name: Game4Free-Renew
+
 on:
   workflow_dispatch:
+
 jobs:
   renew:
     runs-on: ubuntu-latest
@@ -12,12 +14,15 @@ jobs:
           repository: ${{ github.repository_owner }}/Game4free-Renew-Private
           token: ${{ secrets.PRIVATE_REPO_TOKEN }}
           path: private
+
       - name: 📂 移动脚本到工作目录
-        run: mv private/game4free-renew.py game4free-renew.py
+        run: mv private/game4free_renew.py game4free_renew.py
+
       - name: 🐍 设置 Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
+
       - name: 🛡️ 启动 GOST 代理转发
         if: ${{ env.GOST_PROXY != '' }}
         env:
@@ -34,6 +39,7 @@ jobs:
           echo "✅ GOST 已启动，测试连通性..."
           curl -s -x http://127.0.0.1:8080 https://api.ipify.org \
             | sed 's/\([0-9]*\.[0-9]*\.[0-9]*\.\)[0-9]*/\1**/g'
+
       - name: 🛠️ 安装系统依赖
         run: |
           sudo apt-get update -q
@@ -41,10 +47,13 @@ jobs:
             google-chrome-stable \
             xvfb \
             xdotool
+
       - name: 🐍 安装 Python 依赖
         run: pip install seleniumbase
+
       - name: 🔧 安装 ChromeDriver
         run: seleniumbase install chromedriver
+
       - name: 🚀 运行续期脚本
         env:
           PYTHONIOENCODING: utf-8
@@ -53,7 +62,8 @@ jobs:
           GOST_PROXY: ${{ secrets.GOST_PROXY }}
         run: |
           xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24" \
-            python game4free-renew.py
+            python game4free_renew.py
+
       - name: 📸 上传截图
         if: always()
         uses: actions/upload-artifact@v4
