@@ -12,12 +12,12 @@ jobs:
       - name: 📥 下载私库脚本
         uses: actions/checkout@v4
         with:
-          repository: ${{ github.repository_owner }}/ActionNode-Start-Private
+          repository: ${{ github.repository_owner }}/Game4free-Renew-Private
           token: ${{ secrets.PRIVATE_REPO_TOKEN }}
           path: private
 
       - name: 📂 移动脚本到工作目录
-        run: mv private/game4free_renew.py game4free_renew.py
+        run: mv private/game4free-renew.py game4free-renew.py
 
       - name: 🐍 设置 Python
         uses: actions/setup-python@v4
